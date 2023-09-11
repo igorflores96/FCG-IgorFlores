@@ -19,6 +19,11 @@ using namespace std;
 // GLFW
 #include <GLFW/glfw3.h>
 
+// GLM
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "Shader.h"
 
 
@@ -70,10 +75,7 @@ int main()
 	cout << "Renderer: " << renderer << endl;
 	cout << "OpenGL version supported " << version << endl;
 
-	// Definindo as dimensões da viewport com as mesmas dimensões da janela da aplicação
-	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-	glViewport(0, 0, width, height);
+
 
 
 	// Compilando e buildando o programa de shader
@@ -83,36 +85,35 @@ int main()
 	GLuint VAO = setupGeometry();
 	
 
-	// Enviando a cor desejada (vec4) para o fragment shader
-	// Utilizamos a variáveis do tipo uniform em GLSL para armazenar esse tipo de info
-	// que não está nos buffers
-	GLint colorLoc = glGetUniformLocation(shader.ID, "inputColor");
-	
 	shader.Use();
 	
+	glm::mat4 projection = glm::ortho(0.0, 800.0, 600.0, 0.0, -1.0, 1.0);
+	shader.setMat4("projection", glm::value_ptr(projection));
+
+	glLineWidth(5);
+	glPointSize(8);
 
 	// Loop da aplicação - "game loop"
 	while (!glfwWindowShouldClose(window))
 	{
 		// Checa se houveram eventos de input (key pressed, mouse moved etc.) e chama as funções de callback correspondentes
-		glfwPollEvents();
-
+		glfwPollEvents();		
+	
 		// Limpa o buffer de cor
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f); //cor de fundo
 		glClear(GL_COLOR_BUFFER_BIT);
-
-		glLineWidth(10);
-		glPointSize(20);
-
 		glBindVertexArray(VAO); //Conectando ao buffer de geometria
 
-		glUniform4f(colorLoc, 0.8f, 0.5f, 5.0f, 1.0f); //enviando cor para variável uniform inputColor
+		int width, height;
+		glfwGetFramebufferSize(window, &width, &height);
 
+		glViewport(width / 2, height / 2, width / 2, height / 2);
 
-		// Chamada de desenho - drawcall
-		// Poligono Preenchido - GL_TRIANGLES
+		//Definindo a cor e desenhando o triângulo
+		shader.setVec4("inputColor", 1.0f, 0.0f, 0.0f, 1.0f);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
+	
 		glBindVertexArray(0); //Desconectando o buffer de geometria
 
 		// Troca os buffers da tela
@@ -147,9 +148,9 @@ int setupGeometry()
 	// Pode ser arazenado em um VBO único ou em VBOs separados
 	GLfloat vertices[] = {
 		//x   y     z
-		 0.0,  0.0, 0.0, //v0
-		-0.5,  0.5, 0.0, //v1
- 		 0.5,  0.5, 0.0, //v2 
+		 400.0,    0.0,   0.0, //v0
+		 200.0,    300.0, 0.0, //v1
+ 		 600.0,    300.0, 0.0, //v2 
 	};
 
 	GLuint VBO, VAO;
@@ -179,7 +180,7 @@ int setupGeometry()
 	// atualmente vinculado - para que depois possamos desvincular com segurança
 	glBindBuffer(GL_ARRAY_BUFFER, 0); 
 
-	// Desvincula o VAO (é uma boa prática desvincular qualquer buffer ou array para evitar bugs medonhos)
+	// Desvincula o VAO (é uma boa prática desvincular qualquer buffer ou array para evitar bugs medonhos)z
 	glBindVertexArray(0); 
 
 	return VAO;

@@ -74,7 +74,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../Common/Include;../../Dependencies/glfw-3.3.8.bin.WIN32/include;../../Dependencies/GLAD/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Common/Include;../../Dependencies/GLAD/include;../../Dependencies/glfw-3.3.8.bin.WIN32/include;../../Dependencies/GLM</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>../../Dependencies/glfw-3.3.8.bin.WIN32/lib-vc2019</AdditionalLibraryDirectories>
