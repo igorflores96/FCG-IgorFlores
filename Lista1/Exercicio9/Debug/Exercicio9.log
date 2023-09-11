@@ -1,5 +1,0 @@
-﻿  Shader.cpp
-  Source.cpp
-C:\Users\PC\source\repos\FCGIgorFlores\Lista1\Exercicio9\Source.cpp(212,2): warning C4305: 'inicializando': truncamento de 'double' para 'GLfloat'
-  Gerando Código...
-  Exercicio9.vcxproj -> C:\Users\PC\source\repos\FCGIgorFlores\Lista1\Exercicio9\Debug\Exercicio9.exe
