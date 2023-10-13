@@ -1,0 +1,4 @@
+Todos os exercícios estão feitos dentro da Main da solução da lista 3. 
+
+Foram usados 3 geometrias de desenhos, os quadrados 2 e 3 (preto e branco) desenhados no meio da tela. Ambos também se movem ao usar as teclas WASD do teclado. 
+A matriz colorida no fundo é a terceira geometria, o quadrado 1. Feito como uma matriz dentro do loop de execução.
