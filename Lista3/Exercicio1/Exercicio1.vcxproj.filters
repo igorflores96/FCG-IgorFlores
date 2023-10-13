@@ -21,6 +21,9 @@
     <ClCompile Include="..\..\Common\src\glad.c">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="Geometria.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Shaders\Lista3FS.fs">
@@ -29,5 +32,10 @@
     <None Include="..\..\Shaders\Lista3VS.vs">
       <Filter>Arquivos de Recurso</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Geometria.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
