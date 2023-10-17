@@ -62,7 +62,6 @@ int main()
 
 	mazeWall.InitializeSprite(1, 1);
 	mazeWall.SetTexId(texWall);
-	mazeWall.SetPosition(glm::vec3(10.0, 30.0, 0));
 	mazeWall.SetDimension(glm::vec3(spriteWidth, spriteHeight, 0));
 	mazeWall.SetShader(&shader);
 
@@ -98,6 +97,7 @@ int main()
 		//personagem
 		character.UpdateSprite();
 		character.DrawSprite();
+		
 		for (int x = 0; x < WIDTH / 80; x++)
 		{
 			mazeWall.SetPosition(glm::vec3(x * 32.0, 288.0, 0));
@@ -108,7 +108,17 @@ int main()
 			{
 				character.SetPosition(glm::vec3(64.0, 64.0, 0.0));
 			}
+
+			mazeWall.SetPosition(glm::vec3(x * 32.0, 488.0, 0));
+			mazeWall.UpdateSprite();
+			mazeWall.DrawSprite();
+
+			if (mazeWall.CheckColision(character))
+			{
+				character.SetPosition(glm::vec3(64.0, 64.0, 0.0));
+			}
 		}
+
 		
 
 
