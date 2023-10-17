@@ -2,7 +2,7 @@
 
 void Sprite::InitializeSprite(int nAnimations, int nFrames)
 {
-	speed = 5.0;
+	speed = 32.0;
 	this->nAnimations = nAnimations;
 	this->nFrames = nFrames;
 	iAnimation = 0;
@@ -13,13 +13,13 @@ void Sprite::InitializeSprite(int nAnimations, int nFrames)
 
 	GLfloat vertices[] = {
 		//xyz rbg st/uv
-		-0.5,  0.5, 0.0, 1.0, 0.0, 0.0, 0.0, dt,  //v0
-		-0.5, -0.5, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,  //v1
-		 0.5,  0.5, 0.0, 0.0, 0.0, 1.0, ds, dt,  //v2
+		-0.5,  0.5, 0.0, 0.0, dt,  //v0
+		-0.5, -0.5, 0.0, 0.0, 0.0,  //v1
+		 0.5,  0.5, 0.0, ds, dt,  //v2
 
-		-0.5, -0.5, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0,  //v1
-		 0.5, -0.5, 0.0, 0.0, 1.0, 0.0, ds, 0.0,  //v3
-		 0.5,  0.5, 0.0, 0.0, 0.0, 1.0, ds, dt  //v2 
+		-0.5, -0.5, 0.0, 0.0, 0.0,  //v1
+		 0.5, -0.5, 0.0, ds, 0.0,  //v3
+		 0.5,  0.5, 0.0, ds, dt  //v2 
 	};
 
 	GLuint VBO;
@@ -34,16 +34,12 @@ void Sprite::InitializeSprite(int nAnimations, int nFrames)
 	glBindVertexArray(VAO);
 
 	//geometria
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
-	//cor
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
-
 	//textura
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
 
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -72,4 +68,16 @@ void Sprite::DrawSprite()
 	
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+bool Sprite::CheckColision(Sprite &collisor)
+{
+	// collision x-axis?
+	bool collisionX = position.x + dimension.x > collisor.GetPosition().x &&
+		collisor.GetPosition().x + (collisor.GetDimension().x - 1) >= position.x;
+	// collision y-axis?
+	bool collisionY = position.y + dimension.y > collisor.GetPosition().y &&
+		collisor.GetPosition().y + (collisor.GetDimension().y - 1)  >= position.y;
+	// collision only if on both axes
+	return collisionX && collisionY;
 }

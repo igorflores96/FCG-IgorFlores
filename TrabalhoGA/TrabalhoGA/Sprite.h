@@ -27,6 +27,8 @@ public:
 	inline void SetDimension(glm::vec3 dimension) { this->dimension.x = dimension.x / nFrames; this->dimension.y = dimension.y / nAnimations; }
 	inline void SetShader(Shader* shader) { this->shader = shader; }
 	inline void SetAnimation(int iAnimate) { this->iAnimation = iAnimate; }
+	inline glm::vec3 GetPosition() { return position; }
+	inline glm::vec3 GetDimension() { return dimension; }
 
 
 
@@ -41,5 +43,6 @@ public:
 	void InitializeSprite(int nAnimations = 1, int nFrames = 1);
 	void UpdateSprite();
 	void DrawSprite();
+	bool CheckColision(Sprite &collisor);
 };
 

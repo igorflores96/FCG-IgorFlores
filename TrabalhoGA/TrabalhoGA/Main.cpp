@@ -11,7 +11,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 int setupTexture(string filePath, int& width, int& height);
 
-Sprite character;
+Sprite character, background, mazeWall;
 
 const GLuint WIDTH = 800, HEIGHT = 600;
 
@@ -21,7 +21,7 @@ int main()
 	glfwInit();
 
 
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Sprites e movimentacoes! - Igor Flores", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Trabalho GA - Igor Flores e Tiago Gazolla", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 
 
@@ -42,39 +42,40 @@ int main()
 	Shader shader("../Shaders/ShaderVS.vs", "../Shaders/ShaderFS.fs");
 
 	int spriteWidth, spriteHeight;
-	GLuint texIdle = setupTexture("../../textures/characters/PNG/Rogue/rogue.png", spriteWidth, spriteHeight);
+	GLuint texIdle = setupTexture("../../textures/characters/PNG/Rogue/Run_Attack/green.png", spriteWidth, spriteHeight);
 
-	character.InitializeSprite(2, 6);
+	character.InitializeSprite(1, 1);
 	character.SetTexId(texIdle);
-	character.SetPosition(glm::vec3(100.0, 150.0, 0));
+	character.SetPosition(glm::vec3(32.0, 32.0, 0.0));
 	character.SetDimension(glm::vec3(spriteWidth, spriteHeight, 0));
 	character.SetShader(&shader);
 
 	GLuint texBd = setupTexture("../../textures/backgrounds/PNG/Postapocalypce4/Pale/postapocalypse4.png", spriteWidth, spriteHeight);
 
-	Sprite background;
-
-	background.InitializeSprite();
+	background.InitializeSprite(1, 1);
 	background.SetTexId(texBd);
 	background.SetPosition(glm::vec3(400.0, 300.0, 0));
 	background.SetDimension(glm::vec3(spriteWidth / 2, spriteHeight / 2, 0));
 	background.SetShader(&shader);
 
+	GLuint texWall = setupTexture("../../textures/characters/PNG/Rogue/Run_Attack/red.png", spriteWidth, spriteHeight);
 
+	mazeWall.InitializeSprite(1, 1);
+	mazeWall.SetTexId(texWall);
+	mazeWall.SetPosition(glm::vec3(10.0, 30.0, 0));
+	mazeWall.SetDimension(glm::vec3(spriteWidth, spriteHeight, 0));
+	mazeWall.SetShader(&shader);
 
 	shader.Use();
 
 	glm::mat4 projection = glm::ortho(0.0, 800.0, 0.0, 600.0, -1.0, 1.0);
 	shader.setMat4("projection", glm::value_ptr(projection));
-
 	glActiveTexture(GL_TEXTURE0);
 	shader.setInt("texBuffer", 0);
 
-	//transparencia das sprites
+	
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	//profundidade das sprites
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_ALWAYS);
 
@@ -94,10 +95,22 @@ int main()
 		background.UpdateSprite();
 		background.DrawSprite();
 
-
 		//personagem
 		character.UpdateSprite();
 		character.DrawSprite();
+		for (int x = 0; x < WIDTH / 80; x++)
+		{
+			mazeWall.SetPosition(glm::vec3(x * 32.0, 288.0, 0));
+			mazeWall.UpdateSprite();
+			mazeWall.DrawSprite();
+
+			if (mazeWall.CheckColision(character))
+			{
+				character.SetPosition(glm::vec3(64.0, 64.0, 0.0));
+			}
+		}
+		
+
 
 		timer.Finish();
 
@@ -120,21 +133,21 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 
-	if (key == GLFW_KEY_A)
+	if (key == GLFW_KEY_A && action == GLFW_PRESS)
 	{
 		character.SetAnimation(1);
 		character.MoveLeft();
 	}
-	else if (key == GLFW_KEY_D)
+	else if (key == GLFW_KEY_D && action == GLFW_PRESS)
 	{
 		character.SetAnimation(1);
 		character.MoveRight();
 	}
-	else if (key == GLFW_KEY_W)
+	else if (key == GLFW_KEY_W && action == GLFW_PRESS)
 	{
 		character.MoveUp();
 	}
-	else if (key == GLFW_KEY_S)
+	else if (key == GLFW_KEY_S && action == GLFW_PRESS)
 	{
 		character.MoveDown();
 	}
