@@ -29,6 +29,7 @@ public:
 	inline void SetShader(Shader* shader) { this->shader = shader; }
 	inline void SetAnimation(int iAnimate) { this->iAnimation = iAnimate; }
 	inline void SetColected(bool status) { this->hasColected = status; }
+	inline void SetSpeed(float speed) { this->speed = speed; }
 	inline glm::vec3 GetPosition() { return position; }
 	inline glm::vec3 GetDimension() { return dimension; }
 
