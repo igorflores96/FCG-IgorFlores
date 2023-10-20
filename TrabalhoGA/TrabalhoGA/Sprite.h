@@ -15,6 +15,7 @@ protected:
 	glm::vec3 position, dimension, axis;
 	float angle, speed, ds, dt;
 	int nAnimations, nFrames, iAnimation, iFrame;
+	bool hasColected;
 
 	Shader* shader;
 
@@ -27,6 +28,7 @@ public:
 	inline void SetDimension(glm::vec3 dimension) { this->dimension.x = dimension.x / nFrames; this->dimension.y = dimension.y / nAnimations; }
 	inline void SetShader(Shader* shader) { this->shader = shader; }
 	inline void SetAnimation(int iAnimate) { this->iAnimation = iAnimate; }
+	inline void SetColected(bool status) { this->hasColected = status; }
 	inline glm::vec3 GetPosition() { return position; }
 	inline glm::vec3 GetDimension() { return dimension; }
 
@@ -43,6 +45,7 @@ public:
 	void InitializeSprite(int nAnimations = 1, int nFrames = 1);
 	void UpdateSprite();
 	void DrawSprite();
+	bool HasColected();
 	bool CheckColision(Sprite &collisor);
 };
 

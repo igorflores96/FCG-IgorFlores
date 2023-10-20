@@ -70,6 +70,11 @@ void Sprite::DrawSprite()
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+bool Sprite::HasColected()
+{
+	return hasColected;
+}
+
 bool Sprite::CheckColision(Sprite &collisor)
 {
 	// collision x-axis?
