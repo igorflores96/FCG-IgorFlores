@@ -42,7 +42,7 @@ void DrawMaze()
 	//Right Line
 	for (int y = 4; y < 15; y++) { DrawMazeWall(18, y); }
 
-	//Inside Lines (Left to Right - Top to bottom)
+	
 	DrawMazeWall(14, 14);
 
 	DrawMazeWall(7, 13);
@@ -175,8 +175,6 @@ int main()
 	background4.SetPosition(glm::vec3(-560.0, 300.0, 0));
 	background4.SetDimension(glm::vec3(spriteWidth / 2, spriteHeight / 2, 0));
 	background4.SetShader(&shader);
-
-
 
 	tex = setupTexture("../Sprites/Flame.png", spriteWidth, spriteHeight);
 

@@ -77,12 +77,12 @@ bool Sprite::HasColected()
 
 bool Sprite::CheckColision(Sprite &collisor)
 {
-	// collision x-axis?
+	
 	bool collisionX = position.x + dimension.x > collisor.GetPosition().x &&
 		collisor.GetPosition().x + (collisor.GetDimension().x - 1) >= position.x;
-	// collision y-axis?
+	
 	bool collisionY = position.y + dimension.y > collisor.GetPosition().y &&
 		collisor.GetPosition().y + (collisor.GetDimension().y - 1)  >= position.y;
-	// collision only if on both axes
+	
 	return collisionX && collisionY;
 }

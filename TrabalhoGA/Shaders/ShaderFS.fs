@@ -10,5 +10,5 @@ uniform vec2 offset;
 
 void main()
 {
-	color = texture(texBuffer, texcoord + offset);//vec4(vertexColor, 1.0);
+	color = texture(texBuffer, texcoord + offset);
 }
