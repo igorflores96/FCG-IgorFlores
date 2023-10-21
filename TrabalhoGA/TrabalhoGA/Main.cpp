@@ -185,7 +185,7 @@ int main()
 	mazeWall.SetDimension(glm::vec3(spriteWidth, spriteHeight, 0));
 	mazeWall.SetShader(&shader);
 
-	tex = setupTexture("../../textures/characters/PNG/Rogue/Run_Attack/blue.png", spriteWidth, spriteHeight);
+	tex = setupTexture("../Sprites/key.png", spriteWidth, spriteHeight);
 
 	key1.InitializeSprite(1, 1);
 	key1.SetTexId(tex);
@@ -205,7 +205,7 @@ int main()
 	key3.SetDimension(glm::vec3(spriteWidth, spriteHeight, 0));
 	key3.SetShader(&shader);
 
-	tex = setupTexture("../../textures/characters/PNG/Rogue/Run_Attack/green.png", spriteWidth, spriteHeight);
+	tex = setupTexture("../Sprites/gate.png", spriteWidth, spriteHeight);
 
 	gate.InitializeSprite(1, 1);
 	gate.SetTexId(tex);
