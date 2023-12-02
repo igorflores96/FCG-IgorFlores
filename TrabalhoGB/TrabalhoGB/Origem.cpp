@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <assert.h>
+#include <fstream>
 
 using namespace std;
 
@@ -28,6 +29,8 @@ void drawWireGrid(Shader* shader);
 void drawGround(Shader* shader);
 void drawCursor(Shader* shader);
 int setupGroundGeometry();
+void saveGridToFile();
+void loadGridFromFile(const std::string& filename);
 
 
 const GLuint WIDTH = 1000, HEIGHT = 1000;
@@ -150,12 +153,14 @@ int main()
 
 	initializeGrid();
 
+	loadGridFromFile("grid_data.txt");
+
 	while (!glfwWindowShouldClose(window))
 	{
-		// Checa se houveram eventos de input (key pressed, mouse moved etc.) e chama as funções de callback correspondentes
+
 		glfwPollEvents();
 
-		// Limpa o buffer de cor
+
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f); //cor de fundo
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -163,27 +168,26 @@ int main()
 		glPointSize(20);
 
 
-		//Atualizando o shader com a nova posição e orientação da camera
+
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
 
 
-		// Chamadas  de desenho
 
 		glUseProgram(shaderAlpha.ID);
 		shaderAlpha.setMat4("view", glm::value_ptr(view));
 		shaderAlpha.setFloat("alpha", 0.1);
-		//Desenhando o chão
+
 		glBindVertexArray(groundVAO);
 		drawGround(&shaderAlpha);
 
 
-		//Desenhando a grid transparente
+
 		glBindVertexArray(VAO);
 		shaderAlpha.setFloat("alpha", 0.08);
 		drawAlphaGrid(&shaderAlpha);
 
-		//Desenhando a grid de voxels
+
 		glUseProgram(shader.ID);
 		shader.setMat4("view", glm::value_ptr(view));
 		glBindVertexArray(VAO);
@@ -197,31 +201,32 @@ int main()
 
 
 		glUseProgram(shaderAlpha.ID);
-		//Desenhando a grid só contorno
+
 		glBindVertexArray(groundVAO);
 		drawWireGrid(&shaderAlpha);
 
 
 		glBindVertexArray(0);
 
-		// Troca os buffers da tela
+
 		glfwSwapBuffers(window);
 	}
-	// Pede pra OpenGL desalocar os buffers
+
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteVertexArrays(1, &groundVAO);
-	// Finaliza a execução da GLFW, limpando os recursos alocados por ela
 	glfwTerminate();
 	return 0;
 }
 
-// Função de callback de teclado - só pode ter uma instância (deve ser estática se
-// estiver dentro de uma classe) - É chamada sempre que uma tecla for pressionada
-// ou solta via GLFW
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
+
+	if (key == GLFW_KEY_G && action == GLFW_PRESS)
+	{
+		saveGridToFile();
+	}
 
 	if (key == GLFW_KEY_W)
 	{
@@ -657,6 +662,55 @@ void drawCursor(Shader* shader)
 	shader->setMat4("model", glm::value_ptr(model));
 
 	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+void saveGridToFile()
+{
+	std::ofstream outputFile("grid_data.txt");
+
+	if (!outputFile.is_open())
+	{
+		std::cerr << "Error opening file for writing." << std::endl;
+		return;
+	}
+
+	for (int h = 0; h < GRID_H; ++h)
+	{
+		for (int w = 0; w < GRID_W; ++w)
+		{
+			for (int d = 0; d < GRID_D; ++d)
+			{
+				outputFile << grid3D[h][w][d] << " ";
+			}
+			outputFile << "\n";
+		}
+	}
+
+	std::cout << "Grid data saved to grid_data.txt" << std::endl;
+}
+
+void loadGridFromFile(const std::string& filename)
+{
+	std::ifstream file(filename);
+
+	if (!file.is_open())
+	{
+		std::cerr << "Erro ao abrir o arquivo: " << filename << std::endl;
+		return;
+	}
+
+	for (int y = 0; y < GRID_H; y++)
+	{
+		for (int x = 0; x < GRID_W; x++)
+		{
+			for (int z = 0; z < GRID_D; z++)
+			{
+				file >> grid3D[y][x][z];
+			}
+		}
+	}
+
+	file.close();
 }
 
 
